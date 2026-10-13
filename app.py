@@ -1,19 +1,27 @@
 import os
+import io
+import gdown
 import numpy as np
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import tensorflow as tf
 from PIL import Image
-import io
 
 app = Flask(__name__)
 
 # Mengizinkan akses CORS dari domain frontend Hostinger
 CORS(app)
 
-# Load Model Keras/TensorFlow
 MODEL_PATH = 'model_baglog_cnn.h5'
+GDRIVE_FILE_ID = '1_PYaxjs5w89yeOTEiqlfhIPtz1AuwkeG'
 
+# Unduh model dari Google Drive jika belum ada di server Railway
+if not os.path.exists(MODEL_PATH):
+    print("Mengunduh model dari Google Drive...")
+    url = f'https://drive.google.com/uc?id={GDRIVE_FILE_ID}'
+    gdown.download(url, MODEL_PATH, quiet=False)
+
+# Load Model Keras/TensorFlow
 try:
     model = tf.keras.models.load_model(MODEL_PATH)
     print("Model berhasil dimuat!")
@@ -21,7 +29,7 @@ except Exception as e:
     print(f"Gagal memuat model: {e}")
     model = None
 
-# Nama kelas sesuai urutan dataset saat training: ['Mucor', 'Penicillium', 'Sehat', 'Trichoderma']
+# Nama kelas sesuai urutan dataset saat training
 CLASS_NAMES = ['Mucor', 'Penicillium', 'Sehat', 'Trichoderma']
 
 def preprocess_image(image_bytes):
