@@ -18,7 +18,7 @@ GDRIVE_FILE_ID = '1_PYaxjs5w89yeOTEiqlfhIPtz1AuwkeG'
 # Unduh model dari Google Drive jika belum ada di server Railway
 if not os.path.exists(MODEL_PATH):
     print("Mengunduh model dari Google Drive...")
-    url = 'https://drive.google.com/uc?id=1NwnoB-4zqWKEQtKTpV_z7oqdU_gZnX5d'
+    url = 'https://drive.google.com/uc?id=1_PYaxjs5w89yeOTEiqlfhIPtz1AuwkeG'
     gdown.download(url, MODEL_PATH, quiet=False)
 
 # Load Model Keras/TensorFlow
